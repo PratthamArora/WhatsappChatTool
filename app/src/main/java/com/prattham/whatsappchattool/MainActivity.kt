@@ -34,12 +34,11 @@ class MainActivity : AppCompatActivity() {
     private fun startWhatsApp(number: String) {
         val intent = Intent(Intent.ACTION_VIEW)
         intent.setPackage("com.whatsapp")
-        val data: String = if (number[0] == '+')
-            number.substring(1)
-        else if (number.length == 10)
-            "91$number"
-        else
-            number
+        val data: String = when {
+            number[0] == '+' -> number.substring(1)
+            number.length == 10 -> "91$number"
+            else -> number
+        }
 
         intent.data = Uri.parse("https://wa.me/$data")
         if (packageManager.resolveActivity(intent, 0) != null)

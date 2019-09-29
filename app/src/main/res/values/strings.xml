@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">WhatsappChatTool</string>
+    <string name="whatsapp_chat_tool">WhatsApp Chat Tool</string>
 </resources>
