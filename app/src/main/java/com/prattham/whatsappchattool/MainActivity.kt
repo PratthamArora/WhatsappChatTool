@@ -14,15 +14,18 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        var number: String = "0"
+        var number = "0"
 
         if (intent.action == Intent.ACTION_PROCESS_TEXT) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 number = intent?.getCharSequenceExtra(Intent.EXTRA_PROCESS_TEXT).toString()
             }
-        }
+        } else if (intent.action == Intent.ACTION_DIAL ||
+            intent.action == Intent.ACTION_VIEW
+        ) intent.data?.schemeSpecificPart.toString()
+
         if (number.isDigitsOnly())
-            startWhatsApp(number)
+            startWhatsApp(number.trim())
         else
             Toast.makeText(this, "Please check the number", Toast.LENGTH_LONG).show()
 
@@ -31,7 +34,7 @@ class MainActivity : AppCompatActivity() {
     private fun startWhatsApp(number: String) {
         val intent = Intent(Intent.ACTION_VIEW)
         intent.setPackage("com.whatsapp")
-        var data: String = if (number[0] == '+')
+        val data: String = if (number[0] == '+')
             number.substring(1)
         else if (number.length == 10)
             "91$number"
